@@ -20,10 +20,9 @@ public class V_Login extends JFrame {
     // Panel Login
     public JPanel panelLogin;
     
-    public JLabel title, usernameLbl, passwordLbl, lbl;
-    public JTextField username;
-    public JPasswordField password;
-    public JButton login, exit, register;
+    public JTextField textLoginUserName;
+    public JPasswordField passLoginPassword;
+    public JButton buttonLoginLogin, buttonLoginExit, buttonLoginRegister;
     public JPanel topPane, centerPane, bottomPane, bottomPane2;    
     
     // Panel register
@@ -69,32 +68,32 @@ public class V_Login extends JFrame {
         panelLogin = new JPanel();
         panelLogin.setLayout(new BoxLayout(panelLogin, BoxLayout.Y_AXIS));
         
-        title = new JLabel("Inicia sesion en Pac-Chat");
+        JLabel title = new JLabel("Inicia sesion en Pac-Chat");
         topPane.add(title);
         
         centerPane.setLayout(new FlowLayout());
         
-        usernameLbl = new JLabel("Usuario: ");
-        username = new JTextField(25);
+        JLabel usernameLbl = new JLabel("Usuario: ");
+        textLoginUserName = new JTextField(25);
         centerPane.add(usernameLbl);
-        centerPane.add(username);
+        centerPane.add(textLoginUserName);
         
-        passwordLbl = new JLabel("Contraseña: ");
-        password = new JPasswordField(25);
+        JLabel passwordLbl = new JLabel("Contraseña: ");
+        passLoginPassword = new JPasswordField(25);
         centerPane.add(passwordLbl);
-        centerPane.add(password);
+        centerPane.add(passLoginPassword);
         
         bottomPane.setLayout(new FlowLayout());
-        login = new JButton("Inicia Sesion");
-        exit = new JButton("Salir");
-        bottomPane.add(login);
-        bottomPane.add(exit);
+        buttonLoginLogin = new JButton("Inicia Sesion");
+        buttonLoginExit = new JButton("Salir");
+        bottomPane.add(buttonLoginLogin);
+        bottomPane.add(buttonLoginExit);
         
-        lbl = new JLabel("No tienes una?");
-        register = new JButton("Registrate!");
+        JLabel lbl = new JLabel("No tienes una?");
+        buttonLoginRegister = new JButton("Registrate!");
         bottomPane2.setLayout(new FlowLayout());
         bottomPane2.add(lbl);
-        bottomPane2.add(register);
+        bottomPane2.add(buttonLoginRegister);
         
         panelLogin.add(topPane);
         panelLogin.add(centerPane);

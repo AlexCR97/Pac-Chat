@@ -1,5 +1,6 @@
 package MVC_Chat.Panels;
 
+import MVC_Login.M_Login;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -32,8 +33,8 @@ public class PanelChat extends JPanel {
         JPanel panelInfo = new JPanel();
         panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
         
-        JLabel labelName = new JLabel(user.activeChat.userName);
-        JLabel labelState = new JLabel(user.activeChat.activeState);
+        JLabel labelName = new JLabel((user.activeChat != null)? user.activeChat.userName : "");
+        JLabel labelState = new JLabel((user.activeChat != null)? user.activeChat.activeState : "");
         
         panelInfo.add(labelName);
         panelInfo.add(labelState);
@@ -42,7 +43,11 @@ public class PanelChat extends JPanel {
         
         // Image
         JPanel panelImage = new JPanel();
-        panelImage.add(user.activeChat.buttonImage);
+        //if (user.activeChat != null)
+            //panelImage.add(user.activeChat.buttonImage);
+        //else
+            //panelImage.add(M_Login.getPacImageIcon(50, 50));
+        
         
         panelContact.add(panelImage);
         

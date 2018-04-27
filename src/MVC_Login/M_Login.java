@@ -1,8 +1,10 @@
 package MVC_Login;
 
+import java.awt.Image;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
+import javax.swing.ImageIcon;
 
 public class M_Login {
     
@@ -52,6 +54,15 @@ public class M_Login {
         }
         
         return null;
+    }
+    
+    public static ImageIcon getPacImageIcon(int width, int height) {
+        
+        ImageIcon imageIcon = new ImageIcon("src\\Assets\\debug.png");
+        Image image = imageIcon.getImage();
+        imageIcon = new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+        
+        return imageIcon;
     }
     
 }

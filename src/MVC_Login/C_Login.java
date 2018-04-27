@@ -5,11 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import javax.swing.*;
 
+import MVC_Chat.M_Chat;
 import UserData.Profile;
-import java.net.ServerSocket;
-import java.util.Arrays;
 
 public class C_Login implements ActionListener {
     
@@ -19,9 +19,9 @@ public class C_Login implements ActionListener {
         this.app = app;
         
         // Listeners
-        app.view.exit.addActionListener(this);
-        app.view.login.addActionListener(this);
-        app.view.register.addActionListener(this);
+        app.view.buttonLoginExit.addActionListener(this);
+        app.view.buttonLoginLogin.addActionListener(this);
+        app.view.buttonLoginRegister.addActionListener(this);
         app.view.buttonIcon.addActionListener(this);
         app.view.buttonRegisterAccept.addActionListener(this);
         app.view.buttonRegisterCancel.addActionListener(this);
@@ -34,14 +34,14 @@ public class C_Login implements ActionListener {
     }
     
     private void controlPanelLogin(ActionEvent e) {
-        if (e.getSource().equals(app.view.exit))
+        if (e.getSource().equals(app.view.buttonLoginExit))
             app.view.dispose();
         
-        if (e.getSource().equals(app.view.login)) {
+        // Login user
+        if (e.getSource().equals(app.view.buttonLoginLogin))
+            loginUser();
             
-        }
-        
-        if (e.getSource().equals(app.view.register))
+        if (e.getSource().equals(app.view.buttonLoginRegister))
             app.view.panels.show(app.view.container, V_Login.PANEL_REGISTER);
     }
     
@@ -52,9 +52,8 @@ public class C_Login implements ActionListener {
             String path = null;
             int option = chooser.showOpenDialog(chooser);
             
-            if (option == JFileChooser.APPROVE_OPTION) {
+            if (option == JFileChooser.APPROVE_OPTION)
                 path = chooser.getSelectedFile().getAbsolutePath();
-            }
             
             if (path != null) {
                 ImageIcon icon = new ImageIcon(path);
@@ -133,6 +132,19 @@ public class C_Login implements ActionListener {
                 JOptionPane.PLAIN_MESSAGE
         );
         
+    }
+    
+    private void loginUser() {
+        
+        String userName = app.view.textLoginUserName.getText();
+        String password = Arrays.toString(app.view.passLoginPassword.getPassword());
+        
+        Profile user = queryLoginUser(userName, password);
+        
+        if (user != null) {
+            new M_Chat(user);
+            app.view.dispose();
+        }
     }
     
     private synchronized boolean queryUserExists(String userName) {
@@ -223,6 +235,52 @@ public class C_Login implements ActionListener {
             ex.printStackTrace();
         }
         
+    }
+    
+    private synchronized Profile queryLoginUser(String userName, String password) {
+        Profile user;
+        
+        if (queryUserExists(userName)) {
+            try {
+                
+                // Send socket
+                Socket socket = new Socket(M_Login.SERVER_IP, M_Login.SERVER_PORT);
+                
+                // Send query
+                PrintWriter writer = new PrintWriter(socket.getOutputStream());
+                
+                writer.println(M_Login.QUERY_LOGIN);
+                
+                writer.println(app.IP);
+                writer.println(app.PORT);
+                
+                writer.println(userName.toCharArray());
+                writer.println(password.toCharArray());
+                
+                writer.flush();
+                writer.close();
+                socket.close();
+                
+                // Recieve user
+                socket = app.server.accept();
+                
+                // Read user
+                ObjectInputStream oip = new ObjectInputStream(socket.getInputStream());
+                
+                user = (Profile) oip.readObject();
+                System.out.println("Login user is:");
+                System.out.println(user);
+                
+                oip.close();
+                socket.close();
+
+                return user;
+                
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
     }
     
 }

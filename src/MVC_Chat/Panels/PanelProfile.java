@@ -1,5 +1,6 @@
 package MVC_Chat.Panels;
 
+import MVC_Login.M_Login;
 import java.awt.*;
 import javax.swing.*;
 
@@ -25,10 +26,13 @@ public class PanelProfile extends JPanel {
     private void setPanelImage() {
         JPanel panelImage = new JPanel();
         
-        Image image   = user.userImage.getImage();
-        Image resized = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        if (user.userImage != null) {
+            Image image   = user.userImage.getImage();
+            Image resized = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            buttonImage = new JButton(new ImageIcon(resized));
+        } else
+            buttonImage = new JButton(M_Login.getPacImageIcon(100, 100));
         
-        buttonImage = new JButton(new ImageIcon(resized));
         buttonImage.setBorder(BorderFactory.createLineBorder(user.activeColor, 2));
         
         panelImage.add(buttonImage);
